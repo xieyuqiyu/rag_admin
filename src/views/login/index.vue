@@ -20,6 +20,8 @@ import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "~icons/ri/lock-fill";
 import User from "~icons/ri/user-3-fill";
 
+import { rsaPsw } from "@/utils";
+
 defineOptions({
   name: "Login"
 });
@@ -48,11 +50,12 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       loading.value = true;
       useUserStoreHook()
         .loginByUsername({
-          username: ruleForm.username,
-          password: ruleForm.password
+          email: ruleForm.username,
+          password: rsaPsw(ruleForm.password) as string
         })
         .then(res => {
-          if (res.success) {
+          console.log("登录结果", res);
+          if (res.code === 0) {
             // 获取后端路由
             return initRouter().then(() => {
               disabled.value = true;
@@ -64,7 +67,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
                 .finally(() => (disabled.value = false));
             });
           } else {
-            message("登录失败", { type: "error" });
+            message("登录失败:"+res.message, { type: "error" });
           }
         })
         .finally(() => (loading.value = false));
