@@ -70,7 +70,19 @@ const onLogin = async (formEl: FormInstance | undefined) => {
             message("登录失败:"+res.message, { type: "error" });
           }
         })
-        .finally(() => (loading.value = false));
+        .finally(() => {
+          (loading.value = false);
+
+          // 获取个人信息
+          useUserStoreHook()
+            .userInfo()
+            .then(() => {
+              // 登录成功后，清除登录信息
+              ruleForm.username = "";
+              ruleForm.password = "";
+            });
+
+        });
     }
   });
 };

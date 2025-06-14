@@ -40,6 +40,15 @@ export const getLogin = (data?: object) => {
   return http.request<UserResult>("post", "/v1/user/login", { data });
 };
 
+/**获取个人信息 */
+export const getUserInfo = () => {
+  return http.request<UserResult>("get", "/v1/user/info");
+}
+
+/** 获取用户列表 */
+export const getUserList = (data?: object) => {
+  return http.request<UserResult>("get", "/v1/user/getAllUser", { data });
+};
 /** 刷新`token` */
 export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/refresh-token", { data });

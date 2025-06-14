@@ -11,6 +11,7 @@ import {
   type UserResult,
   type RefreshTokenResult,
   getLogin,
+  getUserInfo,
   refreshTokenApi
 } from "@/api/user";
 import { useMultiTagsStoreHook } from "./multiTags";
@@ -69,6 +70,26 @@ export const useUserStore = defineStore("pure-user", {
         getLogin(data)
           .then(data => {
             if (data?.code === 0) setToken(data.data);
+            resolve(data);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+
+    /** 获取个人信息 */
+    async userInfo() {
+      return new Promise<UserResult>((resolve, reject) => {
+        getUserInfo()
+          .then(data => {
+            if (data?.code === 0) {
+              this.SET_AVATAR(data.data.avatar);
+              this.SET_USERNAME(data.data.username);
+              this.SET_NICKNAME(data.data.nickname);
+              this.SET_ROLES(data.data.roles);
+              this.SET_PERMS(data.data.permissions);
+            }
             resolve(data);
           })
           .catch(error => {

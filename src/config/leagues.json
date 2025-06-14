@@ -1,0 +1,100 @@
+{
+  "leagues": [
+    {
+      "name": "FIFA世界杯",
+      "abbreviation": "世界杯",
+      "type": "国际赛事",
+      "description": "世界上最具声望的国际足球比赛，每四年举办一次，参与来自全球的国家队。"
+    },
+    {
+      "name": "欧洲杯 (UEFA European Championship)",
+      "abbreviation": "欧洲杯",
+      "type": "国际赛事",
+      "description": "欧洲国家队的顶级足球比赛，每四年举办一次。"
+    },
+    {
+      "name": "美洲杯 (Copa América)",
+      "abbreviation": "美洲杯",
+      "type": "国际赛事",
+      "description": "南美洲国家队的顶级足球比赛，每四年举办一次。"
+    },
+    {
+      "name": "非洲杯 (Africa Cup of Nations)",
+      "abbreviation": "非洲杯",
+      "type": "国际赛事",
+      "description": "非洲国家的顶级足球赛事，每四年举办一次。"
+    },
+    {
+      "name": "亚洲杯 (AFC Asian Cup)",
+      "abbreviation": "亚洲杯",
+      "type": "国际赛事",
+      "description": "亚洲国家队的顶级足球赛事，每四年举办一次。"
+    },
+    {
+      "name": "欧洲冠军联赛 (UEFA Champions League)",
+      "abbreviation": "欧冠",
+      "type": "俱乐部赛事",
+      "description": "欧洲最具声望的俱乐部比赛，汇聚了来自欧洲顶级俱乐部的球队。"
+    },
+    {
+      "name": "英格兰足球超级联赛 (Premier League)",
+      "abbreviation": "英超",
+      "type": "俱乐部赛事",
+      "description": "英格兰的顶级足球联赛，拥有曼联、利物浦、切尔西等著名俱乐部。"
+    },
+    {
+      "name": "西班牙足球甲级联赛 (La Liga)",
+      "abbreviation": "西甲",
+      "type": "俱乐部赛事",
+      "description": "西班牙的顶级足球联赛，拥有巴萨、皇马等顶级俱乐部。"
+    },
+    {
+      "name": "意大利足球甲级联赛 (Serie A)",
+      "abbreviation": "意甲",
+      "type": "俱乐部赛事",
+      "description": "意大利的顶级足球联赛，历史悠久，拥有尤文图斯、国际米兰、AC米兰等强队。"
+    },
+    {
+      "name": "德国足球甲级联赛 (Bundesliga)",
+      "abbreviation": "德甲",
+      "type": "俱乐部赛事",
+      "description": "德国的顶级足球联赛，拜仁慕尼黑和多特蒙德是联赛中的强队。"
+    },
+    {
+      "name": "法国足球甲级联赛 (Ligue 1)",
+      "abbreviation": "法甲",
+      "type": "俱乐部赛事",
+      "description": "法国的顶级足球联赛，巴黎圣日耳曼（PSG）在近年主导联赛。"
+    },
+    {
+      "name": "中国足球超级联赛 (Chinese Super League)",
+      "abbreviation": "中超",
+      "type": "俱乐部赛事",
+      "description": "中国的顶级足球联赛，近年来吸引了许多国际球员。"
+    },
+    {
+      "name": "巴西足球甲级联赛 (Campeonato Brasileiro Série A)",
+      "abbreviation": "巴甲",
+      "type": "俱乐部赛事",
+      "description": "巴西的顶级足球联赛，拥有强大的俱乐部，如弗拉门戈和帕尔梅拉斯。"
+    },
+    {
+      "name": "阿根廷足球甲级联赛 (Primera División)",
+      "abbreviation": "阿甲",
+      "type": "俱乐部赛事",
+      "description": "阿根廷的顶级足球联赛，拥有博卡青年和河床等强队。"
+    },
+    {
+      "name": "葡萄牙足球超级联赛 (Primeira Liga)",
+      "abbreviation": "葡超",
+      "type": "俱乐部赛事",
+      "description": "葡萄牙的顶级足球联赛，拥有本菲卡和波尔图等传统强队。"
+    },
+    {
+      "name": "荷兰足球甲级联赛 (Eredivisie)",
+      "abbreviation": "荷甲",
+      "type": "俱乐部赛事",
+      "description": "荷兰的顶级足球联赛，著名俱乐部有阿贾克斯和PSV埃因霍温。"
+    }
+  ]
+}
