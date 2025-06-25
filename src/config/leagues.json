@@ -2,7 +2,7 @@
   "leagues": [
     {
       "name": "FIFA世界杯",
-      "abbreviation": "世界杯",
+      "abbreviation": "美金杯",
       "type": "国际赛事",
       "description": "世界上最具声望的国际足球比赛，每四年举办一次，参与来自全球的国家队。"
     },
@@ -95,6 +95,24 @@
       "abbreviation": "荷甲",
       "type": "俱乐部赛事",
       "description": "荷兰的顶级足球联赛，著名俱乐部有阿贾克斯和PSV埃因霍温。"
+    },
+    {
+      "name": "FIFA世界杯",
+      "abbreviation": "美金杯",
+      "type": "国际赛事",
+      "description": "世界上最具声望的国际足球比赛，每四年举办一次，参与来自全球的国家队。"
+    },
+    {
+      "name": "世界足球俱乐部联合会 (Fédération Internationale de Football Association)",
+      "abbreviation": "世俱杯",
+      "type": "国际赛事",
+      "description": "世界上最大的俱乐部足球联合会，负责管理俱乐部和球员之间的关系。"
+    },
+    {
+      "name": "哥伦比亚足球甲级联赛 (Liga de Colombia)",
+      "abbreviation": "哥伦比亚甲",
+      "type": "俱乐部赛事",
+      "description": "哥伦比亚的顶级足球联赛，拥有哥伦比亚足球俱乐部和国际俱乐部。"
     }
   ]
 }
