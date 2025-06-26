@@ -27,12 +27,17 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       proxy: {
         "/v1": {
           target: "http://192.168.50.100:9222", // 目标服务器地址
-          changeOrigin: true, // 是否改变源
+          changeOrigin: true // 是否改变源
         },
         "/api": {
-          // target: "http://192.168.50.100:3001/", // 目标服务器地址
-           target: "http://localhost:3001/", // 目标服务器地址
-          changeOrigin: true, // 是否改变源
+          target: "http://192.168.50.100:3001/", // 目标服务器地址
+          //  target: "http://localhost:3001/", // 目标服务器地址
+          changeOrigin: true // 是否改变源
+        },
+        "/static": {
+          target: "http://192.168.50.100:3001/", // 目标服务器地址
+          //  target: "http://localhost:3001/", // 目标服务器地址
+          changeOrigin: true // 是否改变源
         }
       },
       // 预热文件以提前转换和缓存结果，降低启动期间的初始页面加载时长并防止转换瀑布
@@ -64,10 +69,12 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
         },
         onwarn(warning, warn) {
           // 忽略特定文件的特定警告
-          if (warning.code === 'UNEXPECTED_TOKEN' &&
+          if (
+            warning.code === "UNEXPECTED_TOKEN" &&
             warning.loc &&
             warning.loc.file &&
-            warning.loc.file.includes('iconfont.js')) {
+            warning.loc.file.includes("iconfont.js")
+          ) {
             return;
           }
           warn(warning);

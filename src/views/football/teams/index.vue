@@ -7,7 +7,7 @@
         <el-button type="primary" @click="handleAddTeam">添加球队</el-button>
       </div>
     </div>
-    
+
     <!-- 搜索区域 -->
     <div class="search-section">
       <el-input
@@ -41,7 +41,7 @@
           <template #default="{ row }">
             <el-image
               class="team-logo"
-              :src="row.logo_url"
+              :src="`http://192.168.50.100:3001` + row.logo_url"
               :preview-src-list="[row.logo_url]"
               fit="contain"
               :fallback-src="defaultLogo"
@@ -68,7 +68,7 @@
           </template>
         </el-table-column>
       </el-table>
-      
+
       <!-- 分页组件 -->
       <div class="pagination-container">
         <el-pagination
@@ -239,7 +239,8 @@ const teamForm = reactive({
   stadium: "",
   league: "",
   established_at: "",
-  logo_url: ""
+  logo_url: "",
+  staticUrl: ""
 });
 
 // 表单验证规则
@@ -263,7 +264,10 @@ onMounted(() => {
  * @param page 页码
  * @param limit 每页数量
  */
-const fetchTeamList = async (page: number = currentPage.value, limit: number = pageSize.value) => {
+const fetchTeamList = async (
+  page: number = currentPage.value,
+  limit: number = pageSize.value
+) => {
   loading.value = true;
   try {
     // 使用导入的API函数，传入查询参数
@@ -273,10 +277,10 @@ const fetchTeamList = async (page: number = currentPage.value, limit: number = p
       search: searchQuery.value,
       sortBy: sortBy.value
     });
-    
+
     // 更新球队列表数据
     teamList.value = response.data;
-    
+
     // 更新分页信息
     if (response.meta) {
       currentPage.value = response.meta.page;
@@ -308,7 +312,7 @@ const fetchTeamList = async (page: number = currentPage.value, limit: number = p
         logo_url: "https://example.com/logo2.png"
       }
     ];
-    
+
     // 模拟分页数据
     currentPage.value = 1;
     pageSize.value = 10;
@@ -461,7 +465,7 @@ const submitTeamForm = async () => {
             stadium: teamForm.stadium,
             league: teamForm.league,
             established_at: teamForm.established_at,
-            logo_url: teamForm.logo_url
+            logo_url: teamForm.staticUrl
           });
           ElMessage.success("添加球队成功");
           // 刷新球队列表
@@ -517,11 +521,11 @@ const submitTeamForm = async () => {
     border-radius: 50%;
     object-fit: cover;
   }
-  
+
   .search-section {
     margin-bottom: 20px;
   }
-  
+
   .pagination-container {
     display: flex;
     justify-content: center;

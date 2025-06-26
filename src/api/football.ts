@@ -10,6 +10,8 @@ export type TeamResult = {
     logo_url: string;
     /** 球队简介 */
     url: string;
+    /** 球队静态logo */
+    staticUrl: string;
   }>;
   meta: {
     /** 当前页码 */

@@ -356,7 +356,7 @@ const handleTeamInfo = async (row: any) => {
     try {
       // 获取主队LOGO
       const homeTeamResponse = await getTeamNames({ search: home_team });
-      const homeTeamLogo = homeTeamResponse?.data?.[0]?.url || "";
+      const homeTeamLogo = homeTeamResponse?.data?.[0]?.staticUrl || "";
 
       // 创建主队
       await createTeam({
@@ -388,7 +388,7 @@ const handleTeamInfo = async (row: any) => {
     try {
       // 获取客队LOGO
       const awayTeamResponse = await getTeamNames({ search: away_team });
-      const awayTeamLogo = awayTeamResponse?.data?.[0]?.url || "";
+      const awayTeamLogo = awayTeamResponse?.data?.[0]?.staticUrl || "";
 
       // 创建客队
       await createTeam({
