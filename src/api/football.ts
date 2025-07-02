@@ -98,3 +98,56 @@ export const createMatch = (data: {
 }) => {
   return http.request("post", "/api/matches", { data });
 };
+
+/**
+ * 获取新赛事导入记录列表
+ * @param params 查询参数，包含page和limit等
+ * @returns 新赛事导入记录列表
+ */
+export const getNewMatches = (params?: { page?: number; limit?: number }) => {
+  return http.request("get", "/api/new-matches", { params });
+};
+
+/**
+ * 更新新赛事导入记录
+ * @param id 记录ID
+ * @param data 更新的数据
+ * @returns 更新结果
+ */
+export const updateNewMatch = (
+  id: number,
+  data: {
+    match_time?: string;
+    league?: string;
+    home_team?: string;
+    away_team?: string;
+    match_unique_key?: string;
+    home_extra?: string;
+    away_extra?: string;
+  }
+) => {
+  return http.request("put", `/api/new-matches/${id}`, { data });
+};
+
+/**
+ * 删除新赛事导入记录
+ * @param id 记录ID
+ * @returns 删除结果
+ */
+export const deleteNewMatch = (id: number) => {
+  return http.request("delete", `/api/new-matches/${id}`);
+};
+
+/**
+ * 上传新赛事CSV文件
+ * @param formData 包含文件的FormData
+ * @returns 上传结果
+ */
+export const uploadNewMatchesCsv = (formData: FormData) => {
+  return http.request("post", "/api/new-matches/upload", {
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+};

@@ -137,7 +137,6 @@
             :remote-method="remoteSearchLogos"
             :loading="logosLoading"
             style="width: 100%"
-            @change="handleLogoSelected"
           >
             <el-option
               v-for="item in logoOptions"

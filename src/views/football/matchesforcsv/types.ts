@@ -41,6 +41,14 @@ export interface ImportRecord {
   file_name: string;
   import_status: string;
   created_at: string;
+
+  jingcai_handicap: number;
+  beidan_handicap: number;
+  win: number;
+  draw: number;
+  lose: number;
+  home_extra: string;
+  away_extra: string;
 }
 
 // 分页接口
@@ -51,4 +59,11 @@ export interface Pagination {
   totalPages: number;
   hasPrevious: boolean;
   hasNext: boolean;
+}
+
+export interface FilterForm {
+  team: string;
+  status: string;
+  dateRange: string[];
+  league: string;
 }

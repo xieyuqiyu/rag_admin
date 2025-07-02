@@ -57,6 +57,15 @@ export default {
       }
     },
     {
+      path: "/football/newmatches",
+      name: "FootballNewMatches",
+      component: () => import("@/views/football/newmatches/index.vue"),
+      meta: {
+        title: "新赛事导入",
+        showLink: true
+      }
+    },
+    {
       path: "/football/statistics",
       name: "FootballStatistics",
       component: () => import("@/views/football/statistics/index.vue"),

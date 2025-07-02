@@ -102,81 +102,78 @@
         style="width: 100%"
         class="with-shadow"
       >
-        <el-table-column label="ID" prop="id" width="60" />
+        <!-- 竞彩编号 -->
+        <el-table-column label="竞彩编号" prop="jingcai_number" width="100" />
+        <!-- 北单编号 -->
+        <el-table-column label="北单编号" prop="beidan_number" width="100" />
+        <!-- 开赛时间 -->
         <el-table-column
-          label="比赛时间"
+          label="开赛时间"
           prop="match_time"
           width="140"
           sortable
         />
-        <el-table-column label="竞彩编号" prop="jingcai_number" width="80" />
-        <el-table-column label="北单编号" prop="beidan_number" width="80" />
-        <el-table-column label="联赛" prop="league" width="100" />
-        <el-table-column label="主队" prop="home_team" width="100" />
-        <el-table-column label="客队" prop="away_team" width="100" />
-        <el-table-column label="单关" prop="is_single" width="60" />
-        <el-table-column label="必发" prop="bifa" width="60" />
-        <el-table-column label="主胜" prop="final_home" width="80" />
-        <el-table-column label="让球" prop="final_handicap" width="80" />
-        <el-table-column label="客胜" prop="final_away" width="80" />
-        <el-table-column label="外部ID" prop="external_id" width="100" />
-        <el-table-column label="分析文档" prop="analysis_document" width="200">
+        <!-- 赛事 -->
+        <el-table-column label="赛事" prop="league" width="120" />
+        <!-- 主队 -->
+        <el-table-column label="主队" prop="home_team" width="120" />
+        <!-- 客队 -->
+        <el-table-column label="客队" prop="away_team" width="120" />
+        <!-- 北单让球 -->
+        <el-table-column label="北单让球" prop="beidan_handicap" width="100">
           <template #default="{ row }">
-            <el-tooltip :content="row.analysis_document" placement="top">
-              <span class="analysis-doc-text">{{ row.analysis_document }}</span>
-            </el-tooltip>
+            {{ row.beidan_handicap !== null ? row.beidan_handicap : "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="文件名" prop="file_name" width="120">
+        <!-- 竞彩让球 -->
+        <el-table-column label="竞彩让球" prop="jingcai_handicap" width="100">
           <template #default="{ row }">
-            <el-tooltip :content="row.file_name" placement="top">
-              <span class="file-name-text">{{ row.file_name }}</span>
-            </el-tooltip>
+            {{ row.jingcai_handicap !== null ? row.jingcai_handicap : "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="导入状态" prop="import_status" width="100">
+        <!-- 胜 -->
+        <el-table-column label="胜" prop="win" width="80">
           <template #default="{ row }">
-            <el-tag :type="getImportStatusType(row.import_status)">
-              {{ getImportStatusText(row.import_status) }}
-            </el-tag>
+            {{ row.win !== null ? row.win : "-" }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="导入时间"
-          prop="created_at"
-          width="160"
-          sortable
-        >
+        <!-- 平 -->
+        <el-table-column label="平" prop="draw" width="80">
           <template #default="{ row }">
-            {{ new Date(row.created_at).toLocaleString("zh-CN") }}
+            {{ row.draw !== null ? row.draw : "-" }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="150" fixed="right">
+        <!-- 负 -->
+        <el-table-column label="负" prop="lose" width="80">
+          <template #default="{ row }">
+            {{ row.lose !== null ? row.lose : "-" }}
+          </template>
+        </el-table-column>
+        <!-- 主队额外信息 -->
+        <el-table-column label="主队" prop="home_extra" width="100">
+          <template #default="{ row }">
+            {{ row.home_extra || "-" }}
+          </template>
+        </el-table-column>
+        <!-- 客队额外信息 -->
+        <el-table-column label="客队" prop="away_extra" width="100">
+          <template #default="{ row }">
+            {{ row.away_extra || "-" }}
+          </template>
+        </el-table-column>
+        <!-- 操作列 -->
+        <el-table-column label="操作" width="200" fixed="right">
           <template #default="{ row }">
             <el-button-group>
-              <!-- <el-button
-                type="primary"
-                size="small"
-                @click="handleViewDetail(row)"
-                >查看详情</el-button
-              > -->
               <el-button type="info" size="small" @click="handleTeamInfo(row)"
                 >球队信息引入</el-button
               >
-
               <el-button
                 type="primary"
                 size="small"
                 @click="handlePushMatch(row)"
                 >推送赛事安排</el-button
               >
-
-              <!-- <el-button
-                type="danger"
-                size="small"
-                @click="handleDeleteImport(row)"
-                >删除</el-button
-              > -->
             </el-button-group>
           </template>
         </el-table-column>
@@ -852,29 +849,6 @@ const fetchImportRecords = async (
   } catch (error) {
     console.error("获取导入记录失败:", error);
     ElMessage.error("获取导入记录失败");
-    // 模拟数据
-    importRecords.value = [
-      {
-        id: 18,
-        match_time: "2025-06-11 09-30",
-        jingcai_number: "016",
-        beidan_number: "16",
-        league: "南美预选",
-        home_team: "秘鲁",
-        away_team: "厄瓜多尔",
-        is_single: "",
-        bifa: "有",
-        final_home: "1.14",
-        final_handicap: "0.00",
-        final_away: "0.76",
-        external_id: "2470115",
-        analysis_document:
-          "北单16 竞彩016 南美预选 秘鲁VS厄瓜多尔 2025-06-11 09-30.txt",
-        file_name: "首页.csv",
-        import_status: "success",
-        created_at: "2025-06-10T05:18:13.062Z"
-      }
-    ];
 
     // 模拟分页数据
     pagination.page = 1;

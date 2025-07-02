@@ -30,13 +30,13 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
           changeOrigin: true // 是否改变源
         },
         "/api": {
-          target: "http://192.168.50.100:3001/", // 目标服务器地址
-          //  target: "http://localhost:3001/", // 目标服务器地址
+          // target: "http://192.168.50.100:3001/", // 目标服务器地址
+          target: "http://localhost:3001/", // 目标服务器地址
           changeOrigin: true // 是否改变源
         },
         "/static": {
-          target: "http://192.168.50.100:3001/", // 目标服务器地址
-          //  target: "http://localhost:3001/", // 目标服务器地址
+          // target: "http://192.168.50.100:3001/", // 目标服务器地址
+          target: "http://localhost:3001/", // 目标服务器地址
           changeOrigin: true // 是否改变源
         }
       },
