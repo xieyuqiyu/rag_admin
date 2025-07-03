@@ -151,3 +151,87 @@ export const uploadNewMatchesCsv = (formData: FormData) => {
     }
   });
 };
+
+/**
+ * 获取赛事推荐列表
+ * @param params 查询参数，包含page和limit等
+ * @returns 赛事推荐列表
+ */
+export const getMatchRecommendations = (params?: { page?: number; limit?: number }) => {
+  return http.request("get", "/api/match-recommendations", { params });
+};
+/**
+ * 创建新赛事推荐
+ * @param data 比赛数据
+ * @returns 创建的比赛信息
+ */
+export const createMatchRec = (data: Object) => {
+  return http.request("post", "/api/match-recommendations", { data });
+};
+
+/**
+ * 更新投注详情
+ * @param id 投注详情ID
+ * @param data 更新的数据
+ * @returns 更新结果
+ */
+export const updateBettingDetail = (
+  id: number,
+  data: {
+    jingcai_number?: string;
+    beidan_number?: string;
+    jingcai_handicap?: number;
+    beidan_handicap?: number;
+    win?: number;
+    draw?: number;
+    lose?: number;
+    home_win_rate?: number;
+    away_win_rate?: number;
+    recommended_result?: string;
+    status?: string;
+    notes?: string;
+  }
+) => {
+  return http.request("put", `/api/betting-details/${id}`, { data });
+};
+
+/**
+ * 删除投注详情
+ * @param id 投注详情ID
+ * @returns 删除结果
+ */
+export const deleteBettingDetail = (id: number) => {
+  return http.request("delete", `/api/betting-details/${id}`);
+};
+
+/**
+ * 确认推荐
+ * @param id 投注详情ID
+ * @returns 确认结果
+ */
+export const confirmRecommendation = (id: number) => {
+  return http.request("put", `/api/betting-details/${id}/confirm`);
+};
+
+/**
+ * 创建投注详情
+ * @param data 投注详情数据
+ * @returns 创建的投注详情
+ */
+export const createBettingDetail = (data: {
+  match_id: number;
+  jingcai_number: string;
+  beidan_number: string;
+  jingcai_handicap: number;
+  beidan_handicap: number;
+  win: number;
+  draw: number;
+  lose: number;
+  home_win_rate: number;
+  away_win_rate: number;
+  recommended_result: string;
+  status: string;
+  notes: string;
+}) => {
+  return http.request("post", "/api/betting-details", { data });
+};

@@ -3,16 +3,8 @@
     <div class="header-section">
       <h1>新赛事导入</h1>
       <div class="header-buttons">
-        <el-upload
-          ref="uploadRef"
-          :action="uploadUrl"
-          :headers="uploadHeaders"
-          :before-upload="beforeUpload"
-          :on-success="onUploadSuccess"
-          :on-error="onUploadError"
-          :show-file-list="false"
-          accept=".csv,.xlsx,.xls"
-        >
+        <el-upload ref="uploadRef" :action="uploadUrl" :headers="uploadHeaders" :before-upload="beforeUpload"
+          :on-success="onUploadSuccess" :on-error="onUploadError" :show-file-list="false" accept=".csv,.xlsx,.xls">
           <el-button type="success" :loading="uploading">
             <el-icon>
               <Upload />
@@ -27,31 +19,15 @@
     <div class="filter-section">
       <el-form :inline="true" :model="filterForm">
         <el-form-item label="联赛">
-          <el-select
-            v-model="filterForm.league"
-            placeholder="选择或输入联赛"
-            clearable
-            filterable
-            allow-create
-            default-first-option
-            style="width: 150px"
-          >
-            <el-option
-              v-for="league in leagueOptions"
-              :key="league.abbreviation"
-              :label="league.abbreviation"
-              :value="league.abbreviation"
-            />
+          <el-select v-model="filterForm.league" placeholder="选择或输入联赛" clearable filterable allow-create
+            default-first-option style="width: 150px">
+            <el-option v-for="league in leagueOptions" :key="league.abbreviation" :label="league.abbreviation"
+              :value="league.abbreviation" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="导入状态">
-          <el-select
-            v-model="filterForm.status"
-            placeholder="选择导入状态"
-            clearable
-            style="width: 150px"
-          >
+          <el-select v-model="filterForm.status" placeholder="选择导入状态" clearable style="width: 150px">
             <el-option label="成功" value="success" />
             <el-option label="失败" value="failed" />
             <el-option label="处理中" value="processing" />
@@ -59,32 +35,14 @@
         </el-form-item>
 
         <el-form-item label="日期范围">
-          <el-date-picker
-            v-model="filterForm.dateRange"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            value-format="YYYY-MM-DD"
-          />
+          <el-date-picker v-model="filterForm.dateRange" type="daterange" range-separator="至" start-placeholder="开始日期"
+            end-placeholder="结束日期" value-format="YYYY-MM-DD" />
         </el-form-item>
 
         <el-form-item label="球队">
-          <el-select
-            v-model="filterForm.team"
-            placeholder="选择或输入球队"
-            clearable
-            filterable
-            allow-create
-            default-first-option
-            style="width: 200px"
-          >
-            <el-option
-              v-for="team in teamOptions"
-              :key="team.id"
-              :label="team.name"
-              :value="team.name"
-            />
+          <el-select v-model="filterForm.team" placeholder="选择或输入球队" clearable filterable allow-create
+            default-first-option style="width: 200px">
+            <el-option v-for="team in teamOptions" :key="team.id" :label="team.name" :value="team.name" />
           </el-select>
         </el-form-item>
 
@@ -97,28 +55,14 @@
 
     <!-- 新赛事记录列表 -->
     <div class="table-container">
-      <el-table
-        v-loading="loading"
-        :data="filteredMatchRecords"
-        border
-        stripe
-        style="width: 100%"
-        class="with-shadow"
-        :expand-row-keys="expandedRows"
-        row-key="id"
-        @expand-change="handleExpandChange"
-      >
+      <el-table v-loading="loading" :data="filteredMatchRecords" border stripe style="width: 100%" class="with-shadow"
+        :expand-row-keys="expandedRows" row-key="id" @expand-change="handleExpandChange">
         <!-- 展开行 -->
         <el-table-column type="expand" width="50">
           <template #default="{ row }">
             <div class="betting-details-container">
               <h4>投注详情 ({{ row.betting_count }}条)</h4>
-              <el-table
-                :data="row.bettingDetails"
-                border
-                size="small"
-                style="margin: 10px 0"
-              >
+              <el-table :data="row.bettingDetails" border size="small" style="margin: 10px 0">
                 <el-table-column label="竞彩编号" prop="jingcai_number" width="100" />
                 <el-table-column label="北单编号" prop="beidan_number" width="100" />
                 <el-table-column label="竞彩让球" prop="jingcai_handicap" width="100">
@@ -159,12 +103,7 @@
         </el-table-column>
 
         <!-- 比赛时间 -->
-        <el-table-column
-          label="比赛时间"
-          prop="match_time"
-          width="140"
-          sortable
-        />
+        <el-table-column label="比赛时间" prop="match_time" width="140" sortable />
 
         <!-- 联赛 -->
         <el-table-column label="联赛" prop="league" width="120" />
@@ -234,59 +173,27 @@
 
       <!-- 分页组件 -->
       <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="pagination.page"
-          v-model:page-size="pagination.limit"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="pagination.total"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.limit"
+          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </div>
 
     <!-- 编辑对话框 -->
-    <el-dialog
-      v-model="editDialogVisible"
-      title="编辑比赛记录"
-      width="800px"
-      :before-close="handleEditDialogClose"
-    >
-      <el-form
-        ref="editFormRef"
-        :model="editForm"
-        :rules="editFormRules"
-        label-width="120px"
-      >
+    <el-dialog v-model="editDialogVisible" title="编辑比赛记录" width="800px" :before-close="handleEditDialogClose">
+      <el-form ref="editFormRef" :model="editForm" :rules="editFormRules" label-width="120px">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="比赛时间" prop="match_time">
-              <el-date-picker
-                v-model="editForm.match_time"
-                type="datetime"
-                placeholder="选择比赛时间"
-                format="YYYY-MM-DD HH:mm"
-                value-format="YYYY-MM-DD HH:mm"
-                style="width: 100%"
-              />
+              <el-date-picker v-model="editForm.match_time" type="datetime" placeholder="选择比赛时间"
+                format="YYYY-MM-DD HH:mm" value-format="YYYY-MM-DD HH:mm" style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联赛" prop="league">
-              <el-select
-                v-model="editForm.league"
-                placeholder="选择联赛"
-                filterable
-                allow-create
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="league in leagueOptions"
-                  :key="league.abbreviation"
-                  :label="league.abbreviation"
-                  :value="league.abbreviation"
-                />
+              <el-select v-model="editForm.league" placeholder="选择联赛" filterable allow-create style="width: 100%">
+                <el-option v-for="league in leagueOptions" :key="league.abbreviation" :label="league.abbreviation"
+                  :value="league.abbreviation" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -352,15 +259,17 @@ import {
   getTeamNames,
   createTeam,
   getTeams,
-  createMatch
+  createMatch,
+  createMatchRec
 } from "@/api/football";
-import { 
-  NewMatchRecord, 
-  BettingDetail, 
-  Pagination, 
-  FilterForm, 
-  Team 
+import {
+  NewMatchRecord,
+  BettingDetail,
+  Pagination,
+  FilterForm,
+  Team
 } from "./types";
+import { de } from "element-plus/es/locale/index.mjs";
 
 // 状态变量
 const loading = ref(false);
@@ -755,6 +664,29 @@ const handleEditDialogClose = () => {
   editDialogVisible.value = false;
 };
 
+// 裁切函数
+function transformRowToPayload(row) {
+  return {
+    match_time: row.match_time,
+    league: row.league,
+    home_team: row.home_team,
+    away_team: row.away_team,
+    // home_win_rate: 0.55, // 需要用户输入或你的逻辑生成
+    // away_win_rate: 0.45,
+    betting_details: (row.bettingDetails || []).map(item => ({
+      jingcai_number: item.jingcai_number,
+      beidan_number: item.beidan_number,
+      jingcai_handicap: item.jingcai_handicap,
+      beidan_handicap: item.beidan_handicap,
+      win: item.win,
+      draw: item.draw,
+      lose: item.lose,
+
+    })),
+  };
+}
+
+
 /**
  * 推送赛事安排
  */
@@ -803,15 +735,9 @@ const handlePushMatch = async (row: NewMatchRecord) => {
     }
 
     // 创建比赛
-    await createMatch({
-      home_team: homeTeamId,
-      away_team: awayTeamId,
-      date: formattedDate,
-      stadium: "-",
-      status: "未开始",
-      league: league || "未知联赛",
-      importID: row.id.toString()
-    });
+    // 处理row
+    const matchData = transformRowToPayload(row)
+    await createMatchRec(matchData);
 
     loadingInstance.close();
     ElMessage.success(`赛事 ${home_team} vs ${away_team} 推送成功`);
