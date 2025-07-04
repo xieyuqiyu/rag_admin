@@ -851,6 +851,51 @@ function transformRowToPayload(row) {
 }
 
 /**
+ * 获取球队信息（带容错机制）
+ * @param teamName 球队名称
+ * @param teamType 球队类型（主队/客队）
+ * @returns 球队数据
+ */
+const getTeamInfoWithFallback = async (teamName: string, teamType: string) => {
+  try {
+    // 首先尝试从 team-logos 接口获取球队信息
+    const teamResponse = await getTeamNames({
+      search: teamName,
+      limit: 1,
+      page: 1
+    });
+    console.log(`${teamType}API响应(team-logos):`, teamResponse);
+
+    const teamData = teamResponse?.data?.[0];
+    if (teamData) {
+      console.log(`${teamType}数据(team-logos):`, teamData);
+      return teamData;
+    }
+
+    // 如果第一个接口未返回信息，调用备用接口
+    console.log(`${teamType}在team-logos接口未找到，尝试teams接口`);
+    const fallbackResponse = await getTeams({
+      sortBy: "name",
+      search: teamName,
+      limit: 10,
+      page: 1
+    });
+    console.log(`${teamType}API响应(teams):`, fallbackResponse);
+
+    const fallbackData = fallbackResponse?.data?.[0];
+    if (fallbackData) {
+      console.log(`${teamType}数据(teams):`, fallbackData);
+      return fallbackData;
+    }
+
+    throw new Error(`未找到${teamType} ${teamName} 的信息`);
+  } catch (error) {
+    console.error(`获取${teamType}信息失败:`, error);
+    throw error;
+  }
+};
+
+/**
  * 推送赛事安排
  */
 const handlePushMatch = async (row: NewMatchRecord) => {
@@ -871,36 +916,16 @@ const handlePushMatch = async (row: NewMatchRecord) => {
       formattedDate = match_time.replace(/-/g, (match, offset) => {
         return offset > 10 ? ":" : "-";
       });
-      if (!formattedDate.match(/:\d{2}$/)) {
+      if (!formattedDate.match(/:d{2}$/)) {
         formattedDate += ":00";
       }
     }
 
-    // 获取主队信息（包含队标）
-    const homeTeamResponse = await getTeamNames({
-      search: home_team,
-      limit: 1,
-      page: 1
-    });
-    console.log("主队API响应:", homeTeamResponse);
-    const homeTeamData = homeTeamResponse?.data?.[0];
-    if (!homeTeamData) {
-      throw new Error(`未找到主队 ${home_team} 的信息`);
-    }
-    console.log("主队数据:", homeTeamData);
+    // 获取主队信息（包含队标）- 使用容错机制
+    const homeTeamData = await getTeamInfoWithFallback(home_team, "主队");
 
-    // 获取客队信息（包含队标）
-    const awayTeamResponse = await getTeamNames({
-      search: away_team,
-      limit: 1,
-      page: 1
-    });
-    console.log("客队API响应:", awayTeamResponse);
-    const awayTeamData = awayTeamResponse?.data?.[0];
-    if (!awayTeamData) {
-      throw new Error(`未找到客队 ${away_team} 的信息`);
-    }
-    console.log("客队数据:", awayTeamData);
+    // 获取客队信息（包含队标）- 使用容错机制
+    const awayTeamData = await getTeamInfoWithFallback(away_team, "客队");
 
     // 创建比赛数据，包含球队队标
     const home_team_logo =
