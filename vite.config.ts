@@ -26,17 +26,20 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
         "/v1": {
-          target: "http://192.168.50.100:9222", // 目标服务器地址
+          target: "http://110.41.141.96:8080", // 目标服务器地址
+          // target: "http://192.168.50.100:9222", // 目标服务器地址
           changeOrigin: true // 是否改变源
         },
         "/api": {
+          target: "http://110.41.141.96:3001", // 目标服务器地址
           // target: "http://192.168.50.100:3001/", // 目标服务器地址
-          target: "http://localhost:3001/", // 目标服务器地址
+          // target: "http://localhost:3001/", // 目标服务器地址
           changeOrigin: true // 是否改变源
         },
         "/static": {
+          target: "http://110.41.141.96:3001", // 目标服务器地址
           // target: "http://192.168.50.100:3001/", // 目标服务器地址
-          target: "http://localhost:3001/", // 目标服务器地址
+          // target: "http://localhost:3001/", // 目标服务器地址
           changeOrigin: true // 是否改变源
         }
       },

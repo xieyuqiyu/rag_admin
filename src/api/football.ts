@@ -235,3 +235,27 @@ export const createBettingDetail = (data: {
 }) => {
   return http.request("post", "/api/betting-details", { data });
 };
+
+/**
+ * 更新赛事推荐主信息
+ * @param id 赛事推荐ID
+ * @param data 更新的数据
+ * @returns 更新结果
+ */
+export const updateMatchRecommendation = (
+  id: number,
+  data: {
+    match_time?: string;
+    league?: string;
+    home_team?: string;
+    away_team?: string;
+    home_team_logo?: string;
+    away_team_logo?: string;
+    home_win_rate?: number;
+    away_win_rate?: number;
+    status?: string;
+    notes?: string;
+  }
+) => {
+  return http.request("patch", `/api/match-recommendations/${id}`, { data });
+};

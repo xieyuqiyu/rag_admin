@@ -3,8 +3,16 @@
     <div class="header-section">
       <h1>新赛事导入</h1>
       <div class="header-buttons">
-        <el-upload ref="uploadRef" :action="uploadUrl" :headers="uploadHeaders" :before-upload="beforeUpload"
-          :on-success="onUploadSuccess" :on-error="onUploadError" :show-file-list="false" accept=".csv,.xlsx,.xls">
+        <el-upload
+          ref="uploadRef"
+          :action="uploadUrl"
+          :headers="uploadHeaders"
+          :before-upload="beforeUpload"
+          :on-success="onUploadSuccess"
+          :on-error="onUploadError"
+          :show-file-list="false"
+          accept=".csv,.xlsx,.xls"
+        >
           <el-button type="success" :loading="uploading">
             <el-icon>
               <Upload />
@@ -19,15 +27,31 @@
     <div class="filter-section">
       <el-form :inline="true" :model="filterForm">
         <el-form-item label="联赛">
-          <el-select v-model="filterForm.league" placeholder="选择或输入联赛" clearable filterable allow-create
-            default-first-option style="width: 150px">
-            <el-option v-for="league in leagueOptions" :key="league.abbreviation" :label="league.abbreviation"
-              :value="league.abbreviation" />
+          <el-select
+            v-model="filterForm.league"
+            placeholder="选择或输入联赛"
+            clearable
+            filterable
+            allow-create
+            default-first-option
+            style="width: 150px"
+          >
+            <el-option
+              v-for="league in leagueOptions"
+              :key="league.abbreviation"
+              :label="league.abbreviation"
+              :value="league.abbreviation"
+            />
           </el-select>
         </el-form-item>
 
         <el-form-item label="导入状态">
-          <el-select v-model="filterForm.status" placeholder="选择导入状态" clearable style="width: 150px">
+          <el-select
+            v-model="filterForm.status"
+            placeholder="选择导入状态"
+            clearable
+            style="width: 150px"
+          >
             <el-option label="成功" value="success" />
             <el-option label="失败" value="failed" />
             <el-option label="处理中" value="processing" />
@@ -35,14 +59,32 @@
         </el-form-item>
 
         <el-form-item label="日期范围">
-          <el-date-picker v-model="filterForm.dateRange" type="daterange" range-separator="至" start-placeholder="开始日期"
-            end-placeholder="结束日期" value-format="YYYY-MM-DD" />
+          <el-date-picker
+            v-model="filterForm.dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="YYYY-MM-DD"
+          />
         </el-form-item>
 
         <el-form-item label="球队">
-          <el-select v-model="filterForm.team" placeholder="选择或输入球队" clearable filterable allow-create
-            default-first-option style="width: 200px">
-            <el-option v-for="team in teamOptions" :key="team.id" :label="team.name" :value="team.name" />
+          <el-select
+            v-model="filterForm.team"
+            placeholder="选择或输入球队"
+            clearable
+            filterable
+            allow-create
+            default-first-option
+            style="width: 200px"
+          >
+            <el-option
+              v-for="team in teamOptions"
+              :key="team.id"
+              :label="team.name"
+              :value="team.name"
+            />
           </el-select>
         </el-form-item>
 
@@ -55,24 +97,62 @@
 
     <!-- 新赛事记录列表 -->
     <div class="table-container">
-      <el-table v-loading="loading" :data="filteredMatchRecords" border stripe style="width: 100%" class="with-shadow"
-        :expand-row-keys="expandedRows" row-key="id" @expand-change="handleExpandChange">
+      <el-table
+        v-loading="loading"
+        :data="filteredMatchRecords"
+        border
+        stripe
+        style="width: 100%"
+        class="with-shadow"
+        :expand-row-keys="expandedRows"
+        row-key="id"
+        @expand-change="handleExpandChange"
+      >
         <!-- 展开行 -->
         <el-table-column type="expand" width="50">
           <template #default="{ row }">
             <div class="betting-details-container">
               <h4>投注详情 ({{ row.betting_count }}条)</h4>
-              <el-table :data="row.bettingDetails" border size="small" style="margin: 10px 0">
-                <el-table-column label="竞彩编号" prop="jingcai_number" width="100" />
-                <el-table-column label="北单编号" prop="beidan_number" width="100" />
-                <el-table-column label="竞彩让球" prop="jingcai_handicap" width="100">
+              <el-table
+                :data="row.bettingDetails"
+                border
+                size="small"
+                style="margin: 10px 0"
+              >
+                <el-table-column
+                  label="竞彩编号"
+                  prop="jingcai_number"
+                  width="100"
+                />
+                <el-table-column
+                  label="北单编号"
+                  prop="beidan_number"
+                  width="100"
+                />
+                <el-table-column
+                  label="竞彩让球"
+                  prop="jingcai_handicap"
+                  width="100"
+                >
                   <template #default="{ row: detail }">
-                    {{ detail.jingcai_handicap !== null ? detail.jingcai_handicap : "-" }}
+                    {{
+                      detail.jingcai_handicap !== null
+                        ? detail.jingcai_handicap
+                        : "-"
+                    }}
                   </template>
                 </el-table-column>
-                <el-table-column label="北单让球" prop="beidan_handicap" width="100">
+                <el-table-column
+                  label="北单让球"
+                  prop="beidan_handicap"
+                  width="100"
+                >
                   <template #default="{ row: detail }">
-                    {{ detail.beidan_handicap !== null ? detail.beidan_handicap : "-" }}
+                    {{
+                      detail.beidan_handicap !== null
+                        ? detail.beidan_handicap
+                        : "-"
+                    }}
                   </template>
                 </el-table-column>
                 <el-table-column label="胜" prop="win" width="80">
@@ -90,7 +170,11 @@
                     {{ detail.lose !== null ? detail.lose : "-" }}
                   </template>
                 </el-table-column>
-                <el-table-column label="投注方案" prop="betting_type_desc" width="120" />
+                <el-table-column
+                  label="投注方案"
+                  prop="betting_type_desc"
+                  width="120"
+                />
                 <el-table-column label="排序" prop="sort_order" width="80" />
                 <el-table-column label="备注" prop="remark" width="100">
                   <template #default="{ row: detail }">
@@ -103,7 +187,12 @@
         </el-table-column>
 
         <!-- 比赛时间 -->
-        <el-table-column label="比赛时间" prop="match_time" width="140" sortable />
+        <el-table-column
+          label="比赛时间"
+          prop="match_time"
+          width="140"
+          sortable
+        />
 
         <!-- 联赛 -->
         <el-table-column label="联赛" prop="league" width="120" />
@@ -115,7 +204,12 @@
         <el-table-column label="客队" prop="away_team" width="120" />
 
         <!-- 比赛唯一标识 -->
-        <el-table-column label="比赛标识" prop="match_unique_key" width="200" show-overflow-tooltip />
+        <el-table-column
+          label="比赛标识"
+          prop="match_unique_key"
+          width="200"
+          show-overflow-tooltip
+        />
 
         <!-- 主队附加信息 -->
         <el-table-column label="主队附加" prop="home_extra" width="100">
@@ -135,7 +229,12 @@
         <el-table-column label="投注数量" prop="betting_count" width="100" />
 
         <!-- 文件名 -->
-        <el-table-column label="文件名" prop="file_name" width="150" show-overflow-tooltip />
+        <el-table-column
+          label="文件名"
+          prop="file_name"
+          width="150"
+          show-overflow-tooltip
+        />
 
         <!-- 导入状态 -->
         <el-table-column label="导入状态" prop="import_status" width="100">
@@ -147,7 +246,12 @@
         </el-table-column>
 
         <!-- 创建时间 -->
-        <el-table-column label="创建时间" prop="created_at" width="160" sortable>
+        <el-table-column
+          label="创建时间"
+          prop="created_at"
+          width="160"
+          sortable
+        >
           <template #default="{ row }">
             {{ formatDateTime(row.created_at) }}
           </template>
@@ -160,10 +264,18 @@
               <el-button type="info" size="small" @click="handleTeamInfo(row)">
                 球队信息引入
               </el-button>
-              <el-button type="primary" size="small" @click="handleEditMatch(row)">
+              <el-button
+                type="primary"
+                size="small"
+                @click="handleEditMatch(row)"
+              >
                 修改
               </el-button>
-              <el-button type="success" size="small" @click="handlePushMatch(row)">
+              <el-button
+                type="success"
+                size="small"
+                @click="handlePushMatch(row)"
+              >
                 推送赛事
               </el-button>
             </el-button-group>
@@ -173,27 +285,59 @@
 
       <!-- 分页组件 -->
       <div class="pagination-container">
-        <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.limit"
-          :page-sizes="[10, 20, 50, 100]" :total="pagination.total" layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+        <el-pagination
+          v-model:current-page="pagination.page"
+          v-model:page-size="pagination.limit"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="pagination.total"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
       </div>
     </div>
 
     <!-- 编辑对话框 -->
-    <el-dialog v-model="editDialogVisible" title="编辑比赛记录" width="800px" :before-close="handleEditDialogClose">
-      <el-form ref="editFormRef" :model="editForm" :rules="editFormRules" label-width="120px">
+    <el-dialog
+      v-model="editDialogVisible"
+      title="编辑比赛记录"
+      width="800px"
+      :before-close="handleEditDialogClose"
+    >
+      <el-form
+        ref="editFormRef"
+        :model="editForm"
+        :rules="editFormRules"
+        label-width="120px"
+      >
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="比赛时间" prop="match_time">
-              <el-date-picker v-model="editForm.match_time" type="datetime" placeholder="选择比赛时间"
-                format="YYYY-MM-DD HH:mm" value-format="YYYY-MM-DD HH:mm" style="width: 100%" />
+              <el-date-picker
+                v-model="editForm.match_time"
+                type="datetime"
+                placeholder="选择比赛时间"
+                format="YYYY-MM-DD HH:mm"
+                value-format="YYYY-MM-DD HH:mm"
+                style="width: 100%"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联赛" prop="league">
-              <el-select v-model="editForm.league" placeholder="选择联赛" filterable allow-create style="width: 100%">
-                <el-option v-for="league in leagueOptions" :key="league.abbreviation" :label="league.abbreviation"
-                  :value="league.abbreviation" />
+              <el-select
+                v-model="editForm.league"
+                placeholder="选择联赛"
+                filterable
+                allow-create
+                style="width: 100%"
+              >
+                <el-option
+                  v-for="league in leagueOptions"
+                  :key="league.abbreviation"
+                  :label="league.abbreviation"
+                  :value="league.abbreviation"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -202,12 +346,18 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="主队" prop="home_team">
-              <el-input v-model="editForm.home_team" placeholder="请输入主队名称" />
+              <el-input
+                v-model="editForm.home_team"
+                placeholder="请输入主队名称"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="客队" prop="away_team">
-              <el-input v-model="editForm.away_team" placeholder="请输入客队名称" />
+              <el-input
+                v-model="editForm.away_team"
+                placeholder="请输入客队名称"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -215,25 +365,38 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="主队附加" prop="home_extra">
-              <el-input v-model="editForm.home_extra" placeholder="主队附加信息" />
+              <el-input
+                v-model="editForm.home_extra"
+                placeholder="主队附加信息"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="客队附加" prop="away_extra">
-              <el-input v-model="editForm.away_extra" placeholder="客队附加信息" />
+              <el-input
+                v-model="editForm.away_extra"
+                placeholder="客队附加信息"
+              />
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-form-item label="比赛标识" prop="match_unique_key">
-          <el-input v-model="editForm.match_unique_key" placeholder="比赛唯一标识" />
+          <el-input
+            v-model="editForm.match_unique_key"
+            placeholder="比赛唯一标识"
+          />
         </el-form-item>
       </el-form>
 
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="editDialogVisible = false">取消</el-button>
-          <el-button type="primary" :loading="editLoading" @click="handleSaveEdit">
+          <el-button
+            type="primary"
+            :loading="editLoading"
+            @click="handleSaveEdit"
+          >
             确定
           </el-button>
         </span>
@@ -322,15 +485,9 @@ const editFormRules = {
   match_time: [
     { required: true, message: "请选择比赛时间", trigger: "change" }
   ],
-  league: [
-    { required: true, message: "请输入联赛名称", trigger: "blur" }
-  ],
-  home_team: [
-    { required: true, message: "请输入主队名称", trigger: "blur" }
-  ],
-  away_team: [
-    { required: true, message: "请输入客队名称", trigger: "blur" }
-  ]
+  league: [{ required: true, message: "请输入联赛名称", trigger: "blur" }],
+  home_team: [{ required: true, message: "请输入主队名称", trigger: "blur" }],
+  away_team: [{ required: true, message: "请输入客队名称", trigger: "blur" }]
 };
 
 // 上传配置
@@ -403,7 +560,9 @@ const fetchMatchRecords = async (
     pagination.page = response.data.page;
     pagination.limit = response.data.limit;
     pagination.total = response.data.total;
-    pagination.totalPages = Math.ceil(response.data.total / response.data.limit);
+    pagination.totalPages = Math.ceil(
+      response.data.total / response.data.limit
+    );
     pagination.hasPrevious = response.data.page > 1;
     pagination.hasNext = response.data.page < pagination.totalPages;
   } catch (error) {
@@ -432,8 +591,8 @@ const fetchMatchRecords = async (
             jingcai_handicap: 0.5,
             beidan_handicap: 0,
             win: 1.85,
-            draw: 3.20,
-            lose: 4.50,
+            draw: 3.2,
+            lose: 4.5,
             betting_type_desc: "胜平负",
             sort_order: 1,
             remark: ""
@@ -443,9 +602,9 @@ const fetchMatchRecords = async (
             beidan_number: "B002",
             jingcai_handicap: -0.5,
             beidan_handicap: -1,
-            win: 2.10,
-            draw: 3.00,
-            lose: 3.80,
+            win: 2.1,
+            draw: 3.0,
+            lose: 3.8,
             betting_type_desc: "让球胜平负",
             sort_order: 2,
             remark: ""
@@ -472,8 +631,8 @@ const fetchMatchRecords = async (
             jingcai_handicap: 1,
             beidan_handicap: 0.5,
             win: 1.65,
-            draw: 3.40,
-            lose: 5.20,
+            draw: 3.4,
+            lose: 5.2,
             betting_type_desc: "胜平负",
             sort_order: 1,
             remark: ""
@@ -543,7 +702,7 @@ const handleTeamInfo = async (row: NewMatchRecord) => {
     // 处理主队信息
     try {
       const homeTeamResponse = await getTeamNames({ search: home_team });
-      const homeTeamLogo = homeTeamResponse?.data?.[0]?.staticUrl || "";
+      const homeTeamLogo = homeTeamResponse?.data?.[0]?.logo_url || "";
 
       await createTeam({
         name: home_team,
@@ -559,14 +718,16 @@ const handleTeamInfo = async (row: NewMatchRecord) => {
       if (error.response?.data?.message?.includes("already exists")) {
         ElMessage.warning(`主队 ${home_team} 已存在，跳过创建`);
       } else {
-        ElMessage.error(`创建主队 ${home_team} 失败: ${error.response?.data?.message || "未知错误"}`);
+        ElMessage.error(
+          `创建主队 ${home_team} 失败: ${error.response?.data?.message || "未知错误"}`
+        );
       }
     }
 
     // 处理客队信息
     try {
       const awayTeamResponse = await getTeamNames({ search: away_team });
-      const awayTeamLogo = awayTeamResponse?.data?.[0]?.staticUrl || "";
+      const awayTeamLogo = awayTeamResponse?.data?.[0]?.logo_url || "";
 
       await createTeam({
         name: away_team,
@@ -582,7 +743,9 @@ const handleTeamInfo = async (row: NewMatchRecord) => {
       if (error.response?.data?.message?.includes("already exists")) {
         ElMessage.warning(`客队 ${away_team} 已存在，跳过创建`);
       } else {
-        ElMessage.error(`创建客队 ${away_team} 失败: ${error.response?.data?.message || "未知错误"}`);
+        ElMessage.error(
+          `创建客队 ${away_team} 失败: ${error.response?.data?.message || "未知错误"}`
+        );
       }
     }
 
@@ -632,7 +795,9 @@ const handleSaveEdit = async () => {
     });
 
     // 更新本地数据
-    const index = matchRecords.value.findIndex(record => record.id === editForm.id);
+    const index = matchRecords.value.findIndex(
+      record => record.id === editForm.id
+    );
     if (index > -1) {
       matchRecords.value[index] = {
         ...matchRecords.value[index],
@@ -680,12 +845,10 @@ function transformRowToPayload(row) {
       beidan_handicap: item.beidan_handicap,
       win: item.win,
       draw: item.draw,
-      lose: item.lose,
-
-    })),
+      lose: item.lose
+    }))
   };
 }
-
 
 /**
  * 推送赛事安排
@@ -701,7 +864,10 @@ const handlePushMatch = async (row: NewMatchRecord) => {
 
     // 格式化比赛时间
     let formattedDate = match_time;
-    if (match_time && !match_time.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)) {
+    if (
+      match_time &&
+      !match_time.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
+    ) {
       formattedDate = match_time.replace(/-/g, (match, offset) => {
         return offset > 10 ? ":" : "-";
       });
@@ -710,41 +876,61 @@ const handlePushMatch = async (row: NewMatchRecord) => {
       }
     }
 
-    // 获取主队ID
-    const homeTeamResponse = await getTeams({
+    // 获取主队信息（包含队标）
+    const homeTeamResponse = await getTeamNames({
       search: home_team,
-      sortBy: "name",
       limit: 1,
       page: 1
     });
-    const homeTeamId = homeTeamResponse?.data?.[0]?.id;
-    if (!homeTeamId) {
-      throw new Error(`未找到主队 ${home_team} 的ID`);
+    console.log("主队API响应:", homeTeamResponse);
+    const homeTeamData = homeTeamResponse?.data?.[0];
+    if (!homeTeamData) {
+      throw new Error(`未找到主队 ${home_team} 的信息`);
     }
+    console.log("主队数据:", homeTeamData);
 
-    // 获取客队ID
-    const awayTeamResponse = await getTeams({
+    // 获取客队信息（包含队标）
+    const awayTeamResponse = await getTeamNames({
       search: away_team,
-      sortBy: "name",
       limit: 1,
       page: 1
     });
-    const awayTeamId = awayTeamResponse?.data?.[0]?.id;
-    if (!awayTeamId) {
-      throw new Error(`未找到客队 ${away_team} 的ID`);
+    console.log("客队API响应:", awayTeamResponse);
+    const awayTeamData = awayTeamResponse?.data?.[0];
+    if (!awayTeamData) {
+      throw new Error(`未找到客队 ${away_team} 的信息`);
     }
+    console.log("客队数据:", awayTeamData);
 
-    // 创建比赛
-    // 处理row
-    const matchData = transformRowToPayload(row)
+    // 创建比赛数据，包含球队队标
+    const home_team_logo =
+      homeTeamData.logo_url || homeTeamData.staticUrl || "";
+    const away_team_logo =
+      awayTeamData.logo_url || awayTeamData.staticUrl || "";
+
+    console.log("主队队标:", home_team_logo);
+    console.log("客队队标:", away_team_logo);
+
+    const matchData = {
+      ...transformRowToPayload(row),
+      home_team_logo,
+      away_team_logo
+    };
+
+    console.log("最终推送数据:", matchData);
+
     await createMatchRec(matchData);
 
     loadingInstance.close();
-    ElMessage.success(`赛事 ${home_team} vs ${away_team} 推送成功`);
+    ElMessage.success(
+      `赛事 ${home_team} vs ${away_team} 推送成功，已包含球队队标信息`
+    );
   } catch (error: any) {
     console.error("推送赛事安排失败:", error);
     loadingInstance.close();
-    ElMessage.error(`推送赛事安排失败: ${error.response?.data?.message || "未知错误"}`);
+    ElMessage.error(
+      `推送赛事安排失败: ${error.response?.data?.message || "未知错误"}`
+    );
   }
 };
 

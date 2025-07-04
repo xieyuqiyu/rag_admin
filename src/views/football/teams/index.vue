@@ -41,7 +41,7 @@
           <template #default="{ row }">
             <el-image
               class="team-logo"
-              :src="`http://192.168.50.100:3001` + row.logo_url"
+              :src="`http://110.41.141.96:3001` + row.logo_url"
               :preview-src-list="[row.logo_url]"
               fit="contain"
               :fallback-src="defaultLogo"

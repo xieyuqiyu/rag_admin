@@ -33,6 +33,7 @@
       @recommend="handleRecommend"
       @bold-recommendation-change="handleBoldRecommendationChange"
       @probability-change="handleProbabilityChange"
+      @rate-change="handleRateChange"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
@@ -49,10 +50,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 import { Refresh } from "@element-plus/icons-vue";
 // 导入联赛数据
 import leaguesData from "@/config/leagues.json";
 import type { TableRowData } from "./types";
+// 导入API
+import { updateMatchRecommendation } from "@/api/football";
 // 导入组件
 import RecommendationFilter from "./components/RecommendationFilter.vue";
 import RecommendationTable from "./components/RecommendationTable.vue";
@@ -120,6 +124,43 @@ const handleSaveEdit = async (formData: any) => {
 const handleAddBetting = (row: TableRowData) => {
   currentEditRow.value = null; // 新增模式
   editDialogVisible.value = true;
+};
+
+/**
+ * 处理胜率变化
+ */
+const handleRateChange = async (row: TableRowData, type: "home" | "away", value: number) => {
+  try {
+    // 构建更新数据
+    const updateData = {
+      [type === 'home' ? 'home_win_rate' : 'away_win_rate']: value
+    };
+    
+    // 调用API更新胜率数据
+    await updateMatchRecommendation(row.matchId, updateData);
+    
+    // 更新本地数据
+    if (type === 'home') {
+      row.home_win_rate = value;
+    } else {
+      row.away_win_rate = value;
+    }
+    
+    console.log(`更新${type === 'home' ? '主队' : '客队'}胜率:`, {
+      matchId: row.matchId,
+      type,
+      value: (value * 100).toFixed(1) + '%'
+    });
+    
+    // 显示成功提示
+    ElMessage.success(`${type === 'home' ? '主队' : '客队'}胜率已更新为 ${(value * 100).toFixed(1)}%`);
+  } catch (error) {
+    console.error('更新胜率失败:', error);
+    ElMessage.error('更新胜率失败，请重试');
+    
+    // 刷新数据以恢复原始值
+    await fetchRecommendations();
+  }
 };
 </script>
 

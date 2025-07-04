@@ -164,34 +164,28 @@
         </template>
       </el-table-column>
 
-      <!-- 投注主队胜率 -->
+      <!-- 主队胜率 -->
       <el-table-column
-        label="投注主队胜率"
-        prop="betting_home_win_rate"
-        width="180"
+        label="主队胜率"
+        prop="home_win_rate"
+        width="140"
+        align="center"
       >
         <template #default="{ row }">
-          <div v-if="row.betting_id" class="editable-cell">
+          <div v-if="row.isFirstRow" class="editable-cell">
             <!-- 编辑状态 -->
             <div v-if="row.editingHomeRate" class="editing-state">
               <el-input-number
                 ref="homeRateInput"
-                :model-value="
-                  row.betting_home_win_rate
-                    ? row.betting_home_win_rate * 100
-                    : 0
-                "
-                :precision="1"
-                :step="0.1"
+                :model-value="row.home_win_rate ? row.home_win_rate * 100 : 0"
                 :min="0"
                 :max="100"
+                :precision="1"
+                :step="0.1"
                 size="small"
-                style="width: 100px"
-                @change="
-                  val => handleProbabilityChange(row, 'home_win_rate', val)
-                "
-                @blur="row.editingHomeRate = false"
-                @keyup.enter="row.editingHomeRate = false"
+                @change="value => handleRateChange(row, 'home', value)"
+                @blur="() => finishEditing(row, 'home')"
+                @keyup.enter="() => finishEditing(row, 'home')"
               />
               <span class="percentage">%</span>
             </div>
@@ -203,8 +197,8 @@
             >
               <span class="rate-value">
                 {{
-                  row.betting_home_win_rate
-                    ? (row.betting_home_win_rate * 100).toFixed(1)
+                  row.home_win_rate
+                    ? (row.home_win_rate * 100).toFixed(1)
                     : "0.0"
                 }}%
               </span>
@@ -215,34 +209,28 @@
         </template>
       </el-table-column>
 
-      <!-- 投注客队胜率 -->
+      <!-- 客队胜率 -->
       <el-table-column
-        label="投注客队胜率"
-        prop="betting_away_win_rate"
-        width="180"
+        label="客队胜率"
+        prop="away_win_rate"
+        width="140"
+        align="center"
       >
         <template #default="{ row }">
-          <div v-if="row.betting_id" class="editable-cell">
+          <div v-if="row.isFirstRow" class="editable-cell">
             <!-- 编辑状态 -->
             <div v-if="row.editingAwayRate" class="editing-state">
               <el-input-number
                 ref="awayRateInput"
-                :model-value="
-                  row.betting_away_win_rate
-                    ? row.betting_away_win_rate * 100
-                    : 0
-                "
-                :precision="1"
-                :step="0.1"
+                :model-value="row.away_win_rate ? row.away_win_rate * 100 : 0"
                 :min="0"
                 :max="100"
+                :precision="1"
+                :step="0.1"
                 size="small"
-                style="width: 100px"
-                @change="
-                  val => handleProbabilityChange(row, 'away_win_rate', val)
-                "
-                @blur="row.editingAwayRate = false"
-                @keyup.enter="row.editingAwayRate = false"
+                @change="value => handleRateChange(row, 'away', value)"
+                @blur="() => finishEditing(row, 'away')"
+                @keyup.enter="() => finishEditing(row, 'away')"
               />
               <span class="percentage">%</span>
             </div>
@@ -254,8 +242,8 @@
             >
               <span class="rate-value">
                 {{
-                  row.betting_away_win_rate
-                    ? (row.betting_away_win_rate * 100).toFixed(1)
+                  row.away_win_rate
+                    ? (row.away_win_rate * 100).toFixed(1)
                     : "0.0"
                 }}%
               </span>
@@ -343,36 +331,19 @@
       />
 
       <!-- 操作列 -->
-      <el-table-column label="操作" width="200" fixed="right">
+      <el-table-column label="操作" width="150" fixed="right">
         <template #default="{ row }">
-          <!-- 只有当该行有投注详情时才显示操作按钮 -->
+          <!-- 只有当该行有投注详情时才显示删除按钮 -->
           <div v-if="row.betting_id">
-            <el-button-group>
-              <el-button
-                type="primary"
-                size="small"
-                @click="$emit('edit', row)"
-              >
-                编辑
-              </el-button>
-              <el-button
-                type="success"
-                size="small"
-                :disabled="row.betting_status === 'completed'"
-                @click="$emit('confirm', row)"
-              >
-                确认推荐
-              </el-button>
-              <!-- 删除按钮只在该比赛的第一行显示，删除的是整个比赛推荐记录 -->
-              <el-button
-                v-if="row.isFirstRow"
-                type="danger"
-                size="small"
-                @click="$emit('delete-match', row)"
-              >
-                删除
-              </el-button>
-            </el-button-group>
+            <!-- 删除按钮只在该比赛的第一行显示，删除的是整个比赛推荐记录 -->
+            <el-button
+              v-if="row.isFirstRow"
+              type="danger"
+              size="small"
+              @click="$emit('delete-match', row)"
+            >
+              删除
+            </el-button>
           </div>
           <!-- 如果是比赛的第一行且没有投注详情，显示添加和删除按钮 -->
           <div v-else-if="row.isFirstRow">
@@ -440,6 +411,12 @@ interface Emits {
     value: number
   ): void;
   (e: "bold-recommendation-change", matchId: number, value: string): void;
+  (
+    e: "rate-change",
+    row: TableRowData,
+    type: "home" | "away",
+    value: number
+  ): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -510,6 +487,40 @@ const startEditing = (row: TableRowData, type: "home" | "away") => {
 };
 
 /**
+ * 处理胜率变化
+ */
+const handleRateChange = (
+  row: TableRowData,
+  type: "home" | "away",
+  value: number | null
+) => {
+  if (value !== null && value >= 0 && value <= 100) {
+    // 将百分比转换为小数
+    const rate = value / 100;
+
+    if (type === "home") {
+      row.home_win_rate = rate;
+    } else {
+      row.away_win_rate = rate;
+    }
+
+    // 发射事件通知父组件更新数据
+    emit("rate-change", row, type, rate);
+  }
+};
+
+/**
+ * 完成编辑胜率
+ */
+const finishEditing = (row: TableRowData, type: "home" | "away") => {
+  if (type === "home") {
+    row.editingHomeRate = false;
+  } else {
+    row.editingAwayRate = false;
+  }
+};
+
+/**
  * 处理胆推荐变更
  */
 const handleBoldRecommendationChange = (row: TableRowData, value: string) => {
@@ -524,8 +535,8 @@ const handleBoldRecommendationChange = (row: TableRowData, value: string) => {
 const handleSpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
   // 需要合并单元格的列（比赛基本信息列）
   // 0: 比赛时间, 1: 联赛, 2: 主队, 3: 客队, 4: 比赛状态, 5: 竞彩编号, 6: 北单编号,
-  // 7: 竞彩让球, 8: 北单让球, 9: 胜, 10: 平, 11: 负, 12: 投注主队胜率, 13: 投注客队胜率, 14: 胆
-  const mergeColumns = [0, 1, 2, 3, 4, 14];
+  // 7: 竞彩让球, 8: 北单让球, 9: 胜, 10: 平, 11: 负, 12: 主队胜率, 13: 客队胜率, 14: 胆, 15: 操作
+  const mergeColumns = [0, 1, 2, 3, 4, 12, 13, 14, 15];
 
   if (mergeColumns.includes(columnIndex)) {
     if (row.isFirstRow && row.rowSpan > 1) {
@@ -634,6 +645,25 @@ const getRowKey = (row: TableRowData) => {
       white-space: nowrap;
       z-index: 10;
     }
+  }
+}
+
+// 胜率单元格样式
+.rate-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  .rate-value {
+    font-weight: 600;
+    color: #303133;
+    font-size: 14px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
   }
 }
 

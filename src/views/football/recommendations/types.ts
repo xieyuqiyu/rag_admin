@@ -24,6 +24,8 @@ export interface MatchRecommendation {
   league: string;
   home_team: string;
   away_team: string;
+  home_team_logo?: string; // 主队队标
+  away_team_logo?: string; // 客队队标
   home_win_rate: number;
   away_win_rate: number;
   status: string;
@@ -68,6 +70,8 @@ export interface TableRowData {
   league: string;
   home_team: string;
   away_team: string;
+  home_team_logo?: string; // 主队队标
+  away_team_logo?: string; // 客队队标
   home_win_rate: number;
   away_win_rate: number;
   match_status: string;

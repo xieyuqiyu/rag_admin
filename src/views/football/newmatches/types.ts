@@ -19,6 +19,8 @@ export interface NewMatchRecord {
   league: string; // 联赛名称
   home_team: string; // 主队名称
   away_team: string; // 客队名称
+  home_team_logo?: string; // 主队队标
+  away_team_logo?: string; // 客队队标
   match_unique_key: string; // 比赛唯一标识（时间+联赛+队伍）
   home_extra: string; // 主队附加信息
   away_extra: string; // 客队附加信息
