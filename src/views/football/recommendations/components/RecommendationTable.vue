@@ -258,18 +258,24 @@
       <el-table-column label="胆" prop="bold_recommendation" width="180">
         <template #default="{ row }">
           <div v-if="row.isFirstRow" class="bold-recommendation-cell">
-            <el-radio-group
-              :model-value="row.bold_recommendation || 'none'"
-              size="small"
-              @change="value => handleBoldRecommendationChange(row, value)"
-            >
-              <el-radio-button label="none">无推荐</el-radio-button>
-              <el-radio-button label="recommend">推荐</el-radio-button>
-              <el-radio-button label="recommend_bold">推荐胆</el-radio-button>
-              <el-radio-button label="recommend_stable"
-                >推荐稳胆</el-radio-button
+            <div class="recommendation-buttons">
+              <el-button
+                :type="row.bold_recommendation === 'recommend_bold' ? 'success' : 'default'"
+                size="small"
+                class="recommend-toggle-btn"
+                @click="handleToggleRecommendation(row, 'recommend_bold')"
               >
-            </el-radio-group>
+                {{ row.bold_recommendation === 'recommend_bold' ? '✓ 推荐胆' : '推荐胆' }}
+              </el-button>
+              <el-button
+                :type="row.bold_recommendation === 'recommend_stable' ? 'success' : 'default'"
+                size="small"
+                class="recommend-toggle-btn"
+                @click="handleToggleRecommendation(row, 'recommend_stable')"
+              >
+                {{ row.bold_recommendation === 'recommend_stable' ? '✓ 推荐稳胆' : '推荐稳胆' }}
+              </el-button>
+            </div>
           </div>
           <span v-else>-</span>
         </template>
@@ -530,6 +536,19 @@ const handleBoldRecommendationChange = (row: TableRowData, value: string) => {
 };
 
 /**
+ * 处理推荐按钮切换（可反选）
+ * @param row 表格行数据
+ * @param recommendationType 推荐类型（recommend_bold 或 recommend_stable）
+ */
+const handleToggleRecommendation = (row: TableRowData, recommendationType: string) => {
+  if (row.matchId) {
+    // 如果当前已经是该推荐类型，则反选为无推荐
+    const newValue = row.bold_recommendation === recommendationType ? 'none' : recommendationType;
+    emit("bold-recommendation-change", row.matchId, newValue);
+  }
+};
+
+/**
  * 处理表格合并单元格
  */
 const handleSpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
@@ -664,6 +683,29 @@ const getRowKey = (row: TableRowData) => {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
+  }
+}
+
+// 推荐按钮样式
+.bold-recommendation-cell {
+  .recommendation-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+
+    .recommend-toggle-btn {
+      width: 80px;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+    }
   }
 }
 
